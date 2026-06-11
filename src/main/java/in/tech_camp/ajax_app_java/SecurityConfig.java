@@ -36,8 +36,11 @@ public class SecurityConfig {
   @Bean
   // userDetailsServiceメソッドでBasic認証に使用するユーザー情報の指定
   public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-    UserDetails user = User.withUsername("admin")
-        .password(encoder.encode("2222"))
+    String username = System.getenv("BASIC_AUTH_USER");
+    String password = System.getenv("BASIC_AUTH_PASSWORD");
+
+    UserDetails user = User.withUsername(username)
+        .password(encoder.encode(password))
         .roles("ADMIN")
         .build();
     return new InMemoryUserDetailsManager(user);
